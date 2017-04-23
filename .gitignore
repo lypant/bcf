@@ -5,3 +5,6 @@ __pycache__/
 
 # Ctags tag file
 tags
+
+# Vim backup files
+*.swp
