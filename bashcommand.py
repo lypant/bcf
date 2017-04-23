@@ -6,6 +6,7 @@ import subprocess
 import select
 import os
 import logger
+import time
 
 class BashCommand():
     READ_SIZE = 1024
@@ -25,14 +26,22 @@ class BashCommand():
             self.exitCode = exitCode
             self.stdErr = stdErr
 
+        # def __str__(self):
+            # return '\n\tBash command: %s\n\tExit code: %s\n\tStd err: %s' % \
+                    # (self.command, self.exitCode, self.stdErr)
         def __str__(self):
-            return '\n\tBash command: %s\n\tExit code: %s\n\tStd err: %s' % \
+            return '\nBash command: %s\nExit code: %s\nStd err: %s' % \
                     (self.command, self.exitCode, self.stdErr)
 
     def __init__(self, command, description='', input=''):
         self.command = command
         self.description = description
         self.input = input
+
+        self.index = 0  # Will be set by execution plan
+        self.startTime = 0
+        self.endTime = 0
+        self.duration = 0
 
         self._cleanupTemporaryData()
 
@@ -47,12 +56,14 @@ class BashCommand():
     def execute(self, logger=None):
         # Set logger
         self.logger = logger
-
+        self.startTime = time.time()
         self._createSubprocess()
         self._prepareInputStreamsAndData()
         self._prepareOutputStreams()
         self._waitForIOCompletion()
         self.process.wait()
+        self.endTime = time.time()
+        self.duration = self.endTime - self.startTime
         self._checkReturnCode()
 
         self._cleanupTemporaryData()
@@ -108,7 +119,7 @@ class BashCommand():
             raise BashCommand.ExecutionError(
                 self.command,
                 self.process.returncode,
-                self.errMsg)
+                self.errMsg.rstrip())
 
 
 if __name__ == '__main__':
@@ -122,7 +133,7 @@ if __name__ == '__main__':
     # bc1.execute(lgr)
 
     bc3 = BashCommand('ls /zonk')
-try:
-    bc3.execute(lgr)
-except BashCommand.ExecutionError as e:
-     lgr.logError(e)
+    try:
+        bc3.execute(lgr)
+    except BashCommand.ExecutionError as e:
+         lgr.logError(e)
