@@ -8,6 +8,7 @@ import os
 import logger
 import time
 
+
 class BashCommand():
     READ_SIZE = 1024
 
@@ -18,7 +19,7 @@ class BashCommand():
         def __init__(self, command, exitCode, stdErr):
             '''
             @param command bash command which caused an execution error
-            @param exitCode exit code returned by bash when executing the command
+            @param exitCode exit code of the command returned by bash
             @param stdErr output passed to stderr by the command
             '''
             Exception.__init__(self)
@@ -26,9 +27,6 @@ class BashCommand():
             self.exitCode = exitCode
             self.stdErr = stdErr
 
-        # def __str__(self):
-            # return '\n\tBash command: %s\n\tExit code: %s\n\tStd err: %s' % \
-                    # (self.command, self.exitCode, self.stdErr)
         def __str__(self):
             return '\nBash command: %s\nExit code: %s\nStd err: %s' % \
                     (self.command, self.exitCode, self.stdErr)
@@ -69,7 +67,7 @@ class BashCommand():
         self._cleanupTemporaryData()
 
     def _createSubprocess(self):
-        self.process =  subprocess.Popen(
+        self.process = subprocess.Popen(
             ['/usr/bin/bash', '-c', self.command],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
@@ -136,4 +134,4 @@ if __name__ == '__main__':
     try:
         bc3.execute(lgr)
     except BashCommand.ExecutionError as e:
-         lgr.logError(e)
+        lgr.logError(e)

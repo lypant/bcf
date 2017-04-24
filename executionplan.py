@@ -6,6 +6,7 @@ import time
 import datetime
 import bashcommand
 
+
 class ExecutionPlan():
     # Format of a message printed before executing a command
     START_MSG = 'Cmd [{command:0{width}}/{commands:0{width}}] {description}...'
@@ -51,7 +52,8 @@ class ExecutionPlan():
             try:
                 command.execute(self.logger)
             except bashcommand.BashCommand.ExecutionError as exception:
-                self.logger.logError(ExecutionPlan.EXCEPTION_MSG + str(exception))
+                self.logger.logError(
+                    ExecutionPlan.EXCEPTION_MSG + str(exception))
                 resultMsg = ExecutionPlan.RESULT_MSG_FAILED
                 finalResultMsg = resultMsg
                 break
@@ -72,6 +74,7 @@ class ExecutionPlan():
             executionPlan=self.name,
             result=finalResultMsg,
             duration=formattedDuration))
+
 
 if __name__ == '__main__':
     import logger

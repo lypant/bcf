@@ -109,6 +109,7 @@ class Logger():
         '''
         self.logger.exception(msg, *args, **kwargs)
 
+
 if __name__ == '__main__':
     log = '/tmp/bcf_logger.log'
     print('(check %s for file handler output)' % log)
