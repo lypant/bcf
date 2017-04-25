@@ -36,12 +36,14 @@ class BashCommand():
         self.description = description
         self.input = input
 
-        self.index = 0  # Will be set by execution plan
         self.startTime = 0
         self.endTime = 0
         self.duration = 0
 
         self._cleanupTemporaryData()
+
+    def __str__(self):
+        return '<BashCommand> "%s" "%s"' % (self.description, self.command)
 
     def _cleanupTemporaryData(self):
         self.logger = None
