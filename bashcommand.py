@@ -70,7 +70,7 @@ class BashCommand():
 
     def _createSubprocess(self):
         self.process = subprocess.Popen(
-            ['/usr/bin/bash', '-c', self.command],
+            ['/usr/bin/env', 'bash', '-c', self.command],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE)
