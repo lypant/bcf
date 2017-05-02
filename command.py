@@ -2,14 +2,14 @@
 
 from __future__ import print_function
 
+import logger
 import subprocess
 import select
 import os
-import logger
 import time
 
 
-class BashCommand():
+class Command():
     READ_SIZE = 1024
 
     class ExecutionError(Exception):
@@ -43,7 +43,7 @@ class BashCommand():
         self._cleanupTemporaryData()
 
     def __str__(self):
-        return '<BashCommand> "%s" "%s"' % (self.description, self.command)
+        return '<Command> "%s" "%s"' % (self.description, self.command)
 
     def _cleanupTemporaryData(self):
         self.logger = None
@@ -101,7 +101,7 @@ class BashCommand():
 
     def _handleSubprocessOutput(self):
         for fileDescriptor in self.outputStreams:
-            data = os.read(fileDescriptor, BashCommand.READ_SIZE)
+            data = os.read(fileDescriptor, Command.READ_SIZE)
             if data:
                 self._storeMessageWhenErrorStream(fileDescriptor, data)
                 self._logOutput(data.rstrip())
@@ -116,24 +116,24 @@ class BashCommand():
 
     def _checkReturnCode(self):
         if self.process.returncode:
-            raise BashCommand.ExecutionError(
+            raise Command.ExecutionError(
                 self.command,
                 self.process.returncode,
                 self.errMsg.rstrip())
 
 
 if __name__ == '__main__':
-    lgr = logger.Logger('/tmp/bashcommand.log')
-    # bc1 = BashCommand('ls /')
-    # bc2 = BashCommand('ls /home')
-    # bc1.execute(lgr)
-    # bc2.execute(lgr)
-    # bc1.execute()
-    # bc1.execute(lgr)
-    # bc1.execute(lgr)
+    lgr = logger.Logger('/tmp/command.log')
+    bc1 = Command('ls /')
+    bc2 = Command('ls /home')
+    bc1.execute(lgr)
+    bc2.execute(lgr)
+    bc1.execute()
+    bc1.execute(lgr)
+    bc1.execute(lgr)
 
-    bc3 = BashCommand('ls /zonk')
+    bc3 = Command('ls /zonk')
     try:
         bc3.execute(lgr)
-    except BashCommand.ExecutionError as e:
+    except Command.ExecutionError as e:
         lgr.logError(e)

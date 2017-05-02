@@ -8,3 +8,6 @@ tags
 
 # Vim backup files
 *.swp
+
+# Log files
+*.log

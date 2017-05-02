@@ -62,6 +62,7 @@ class Logger():
                     'level': Logger.OUTPUT}})
         logging.config.dictConfig(dictConf)
         self.logger = logging.getLogger('myLogger')
+        self.logFile = logFile
 
     def logError(self, msg, *args, **kwargs):
         '''

@@ -2,6 +2,7 @@
 
 from __future__ import print_function
 from logger import Logger
+from command import Command
 import time
 import datetime
 
@@ -73,6 +74,8 @@ class Plan():
         commandsCount = len(self.commands)
         width = len(str(commandsCount))
         finalResultMsg = ''
+        self.logger.logStatistic(
+                'Executing plan %s; logging to: %s' % (self.name, self.logger.logFile))
         startTime = time.time()
         for index in self.commands:
             command = self.commands[index]
@@ -87,7 +90,7 @@ class Plan():
                 Plan.CMD_MSG.format(command=command.command))
             try:
                 command.execute(self.logger)
-            except BashCommand.ExecutionError as exception:
+            except Command.ExecutionError as exception:
                 self.logger.logError(
                     Plan.EXCEPTION_MSG + str(exception))
                 resultMsg = Plan.RESULT_MSG_FAILED
@@ -113,35 +116,17 @@ class Plan():
 
 
 if __name__ == '__main__':
-    from bashcommand import BashCommand
-
     commands = [
-        BashCommand('echo 1', 'First echo'),
-        BashCommand('echo 2', 'Second echo'),
-        BashCommand('echo 3', 'Third echo'),
-        BashCommand('echo 4', 'Fourth echo'),
-        BashCommand('echo 5', 'Fifth echo'),
-        BashCommand('echo 6', 'Sixth echo'),
-        BashCommand('echo 7', 'Seventh echo'),
-        BashCommand('echo 8', 'Eight echo'),
-        BashCommand('echo 9', 'Ninth echo'),
-        # BashCommand('ls /zonk', 'Zonk'),
-        BashCommand('echo 10', 'Tenth echo')]
+        Command('echo 1', 'First echo'),
+        Command('echo 2', 'Second echo'),
+        Command('echo 3', 'Third echo'),
+        Command('echo 4', 'Fourth echo'),
+        Command('echo 5', 'Fifth echo'),
+        Command('echo 6', 'Sixth echo'),
+        Command('echo 7', 'Seventh echo'),
+        Command('echo 8', 'Eight echo'),
+        Command('echo 9', 'Ninth echo'),
+        Command('echo 10', 'Tenth echo')]
 
     p = Plan('Echos', commands)
-
-    '''
-    for cmd in p.getCommands([1, 3, 5]):
-        print(cmd)
-    for cmd in p.getCommandsExcept([1, 3, 5]):
-        print(cmd)
-    for cmd in p.getCommandsBefore(5):
-        print(cmd)
-    for cmd in p.getCommandsAfter(5):
-        print(cmd)
-    for cmd in p.getAllCommands():
-        print(cmd)
-    print(p)
-    '''
-
     p.execute()
