@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
-import logger
 import subprocess
 import select
 import os
 import time
 
+# TODO This import should not be needed once tests are moved to separate file
+from . import logger
 
 class Command():
     READ_SIZE = 1024
@@ -120,6 +121,7 @@ class Command():
                 self.errMsg.rstrip())
 
 
+# TODO This should be moved to separate test file
 if __name__ == '__main__':
     lgr = logger.Logger('/tmp/command.log')
     bc1 = Command('ls /')

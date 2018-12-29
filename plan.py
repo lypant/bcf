@@ -3,8 +3,8 @@
 import time
 import datetime
 
-from logger import Logger
-from command import Command
+from .logger import Logger
+from .command import Command
 
 
 class Plan():
@@ -114,7 +114,7 @@ class Plan():
             result=finalResultMsg,
             duration=formattedDuration))
 
-
+# TODO Move to separate test file
 if __name__ == '__main__':
     commands = [
         Command('echo 1', 'First echo'),
