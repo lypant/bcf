@@ -1,6 +1,4 @@
-#!/usr/bin/env python2
-
-from __future__ import print_function
+#!/usr/bin/env python3
 
 import logger
 import subprocess
@@ -93,7 +91,7 @@ class Command():
 
     def _storeMessageWhenErrorStream(self, fileDescriptor, data):
         if fileDescriptor == self.process.stderr.fileno():
-            self.errMsg += data
+            self.errMsg += data.decode()
 
     def _logOutput(self, data):
         if self.logger:

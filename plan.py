@@ -1,10 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
-from __future__ import print_function
-from logger import Logger
-from command import Command
 import time
 import datetime
+
+from logger import Logger
+from command import Command
 
 
 class Plan():
